@@ -1,0 +1,50 @@
+# Vagrantfile의 시작을 나타냅니다. 이 부분에서는 Vagrantfile의 구성을 정의합니다.
+Vagrant.configure("2") do |config|
+    ### 마스터 노드
+    # "m-k8s-1.29"이라는 이름의 마스터 노드를 정의합니다. primary: true는 이 노드가 기본 설정으로 사용됨을 나타냅니다.
+    config.vm.define "m-k8s-1.29", primary: true do |cfg|
+      # 가상 머신에 사용할 Box(이미지)를 지정합니다.
+      cfg.vm.box = "sysnet4admin/CentOS-k8s"
+      # VirtualBox를 제공자로 사용합니다.
+      cfg.vm.provider "virtualbox" do |vb|
+        # 가상 머신의 이름, CPU 및 메모리 설정을 지정합니다.
+        vb.name = "m-k8s-1.29"
+        vb.cpus = 4
+        vb.memory = 4096
+        vb.customize ["modifyvm", :id, "--groups", "/k8s-1.29"]
+      end
+      # 가상 머신의 호스트 이름을 설정합니다.
+      cfg.vm.host_name = "m-k8s"
+      # 가상 머신의 네트워크 설정을 지정합니다. 여기서는 개인 네트워크 및 포워딩된 포트를 설정합니다.
+      cfg.vm.network "private_network", ip: "192.168.29.10"
+      cfg.vm.network "forwarded_port", guest: 22, host: 60020, auto_correct: true, id: "ssh"
+      # 호스트와 가상 머신 간의 폴더 동기화를 설정합니다. 여기서는 비활성화됩니다.
+      cfg.vm.synced_folder "../data", "/vagrant", disabled: true 
+      # 가상 머신 프로비저닝을 위한 쉘 스크립트를 실행합니다.
+      cfg.vm.provision "shell", path: "k8s_env_build.sh", args: N
+      cfg.vm.provision "shell", path: "k8s_pkg_cfg.sh", args: [ k8s_V, docker_V, ctrd_V ]
+      cfg.vm.provision "shell", path: "master_node.sh"
+    end 
+    
+    ### 워커 노드
+    # 워커 노드를 정의하는 루프입니다. "w1-k8s-1.29"부터 "wN-k8s-1.29"까지의 이름을 가진 워커 노드를 생성합니다.
+    # 워커 노드의 구성은 마스터 노드와 유사하지만, 가상 머신의 이름, CPU, 메모리, IP 주소 등이 다르게 설정됩니다.
+    (1..N).each do |i|
+      config.vm.define "w#{i}-k8s-1.29" do |cfg|
+        cfg.vm.box = "sysnet4admin/CentOS-k8s"
+        cfg.vm.provider "virtualbox" do |vb|
+          vb.name = "w#{i}-k8s-1.29"
+          vb.cpus = 2
+          vb.memory = 2048
+          vb.customize ["modifyvm", :id, "--groups", "/k8s-1.29"]
+        end
+        cfg.vm.host_name = "w#{i}-k8s"
+        cfg.vm.network "private_network", ip: "192.168.29.1#{i}"
+        cfg.vm.network "forwarded_port", guest: 22, host: "6020#{i}", auto_correct: true, id: "ssh"
+        cfg.vm.synced_folder "../data", "/vagrant", disabled: true
+        cfg.vm.provision "shell", path: "k8s_env_build.sh", args: N
+        cfg.vm.provision "shell", path: "k8s_pkg_cfg.sh", args: [ k8s_V, docker_V, ctrd_V ]
+        cfg.vm.provision "shell", path: "work_nodes.sh"
+      end
+    end
+  end
