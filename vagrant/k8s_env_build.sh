@@ -39,6 +39,9 @@ modprobe br_netfilter
 echo "192.168.29.10 m-k8s" >> /etc/hosts
 for (( i=1; i<=$1; i++  )); do echo "192.168.29.1$i w$i-k8s" >> /etc/hosts; done
 
+# 설정을 시스템에 적용한다.
+sysctl --system
+
 # kubernetes repo
 # Kubernetes 저장소 설정
 # Google 저장소 주소를 설정합니다.
@@ -53,9 +56,6 @@ gpgcheck=0
 repo_gpgcheck=0
 gpgkey=https://${gg_pkg}/yum-key.gpg https://${gg_pkg}/rpm-package-key.gpg
 EOF
-
-# 설정을 시스템에 적용한다.
-sysctl --system
 
 # add docker-ce repo
 # Docker 저장소 설정
