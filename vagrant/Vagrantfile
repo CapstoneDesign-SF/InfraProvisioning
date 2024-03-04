@@ -16,6 +16,8 @@ Vagrant.configure("2") do |config|
   # Master Node #
   #=============#
   config.vm.define "m-k8s-#{k8s_V[0..3]}", primary: true do |cfg|
+    # insecure vagrant key
+    #cfg.ssh.insert_key = false
     cfg.vm.box = "sysnet4admin/CentOS-k8s"
     cfg.vm.provider "virtualbox" do |vb|
       vb.name = "m-k8s-#{k8s_V[0..3]}"
@@ -40,6 +42,8 @@ Vagrant.configure("2") do |config|
   #==============#
   (1..N).each do |i|
     config.vm.define "w#{i}-k8s-#{k8s_V[0..3]}" do |cfg|
+      # insecure vagrant key
+      #cfg.ssh.insert_key = false
       cfg.vm.box = "sysnet4admin/CentOS-k8s"
       cfg.vm.provider "virtualbox" do |vb|
         vb.name = "w#{i}-k8s-#{k8s_V[0..3]}"
