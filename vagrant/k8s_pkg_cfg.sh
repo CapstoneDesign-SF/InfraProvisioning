@@ -21,7 +21,8 @@ systemctl restart containerd
 # both kubelet and kubectl will install by dependency
 # but aim to latest version. so fixed version by manually
 # 쿠버네티스와 관련된 패키지를 설치합니다.
-yum install kubelet-$1 kubectl-$1 kubeadm-$1 -y 
+#yum install kubelet-$1 kubectl-$1 kubeadm-$1 -y 
+yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 # Ready to install for k8s 
 # Docker 및 kubelet을 시스템 부팅 시 자동으로 실행하도록 구성합니다.

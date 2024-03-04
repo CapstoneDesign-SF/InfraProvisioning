@@ -11,19 +11,25 @@ swapoff -a
 # /etc/fstab 파일에서 스왑 파티션을 주석 처리하여 스왑이 부팅 시 자동으로 마운트되지 않도록 설정합니다.
 sed -i.bak -r 's/(.+ swap .+)/#\1/' /etc/fstab
 
+# Set SELinux in permissive mode (effectively disabling it)
+# SELinux를 permissive 모드로 설정하여 비활성화합니다.
+setenforce 0
+# /etc/selinux/config 파일에서 SELinux 설정을 permissive로 변경합니다.
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
 # kubernetes repo
 # Kubernetes 저장소 설정
 # Google 저장소 주소를 설정합니다.
 gg_pkg="packages.cloud.google.com/yum/doc" # Due to shorten addr for key
 # 파일을 생성하고 Kubernetes 패키지를 설치할 수 있는 저장소 정보를 추가합니다.
-cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
 enabled=1
-gpgcheck=0
-repo_gpgcheck=0
-gpgkey=https://${gg_pkg}/yum-key.gpg https://${gg_pkg}/rpm-package-key.gpg
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
 
 # add docker-ce repo
@@ -32,12 +38,6 @@ EOF
 yum install yum-utils -y 
 # Docker 저장소 정보를 /etc/yum.repos.d/docker-ce.repo에 추가합니다.
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-
-# Set SELinux in permissive mode (effectively disabling it)
-# SELinux를 permissive 모드로 설정하여 비활성화합니다.
-setenforce 0
-# /etc/selinux/config 파일에서 SELinux 설정을 permissive로 변경합니다.
-sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 # RHEL/CentOS 7 have reported traffic issues being routed incorrectly due to iptables bypassed
 # iptables 설정:
