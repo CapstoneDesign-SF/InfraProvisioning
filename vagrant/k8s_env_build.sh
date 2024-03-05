@@ -5,8 +5,8 @@
 echo 'alias vi=vim' >> /etc/profile
 
 # 방화벽 해제
-systemctl stop firewalld && systemctl disable firewalld
-systemctl stop NetworkManager && systemctl disable NetworkManager
+#systemctl stop firewalld && systemctl disable firewalld
+#systemctl stop NetworkManager && systemctl disable NetworkManager
 
 # swapoff -a to disable swapping
 # 시스템의 스왑을 비활성화합니다.

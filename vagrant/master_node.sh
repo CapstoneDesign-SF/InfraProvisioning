@@ -51,3 +51,9 @@ kubectl completion bash >/etc/bash_completion.d/kubectl
 echo 'alias k=kubectl' >> ~/.bashrc
 echo "alias ka='kubectl apply -f'" >> ~/.bashrc
 echo 'complete -F __start_kubectl k' >> ~/.bashrc
+
+# 6443 port 공개
+systemctl start firewalld
+firewall-cmd --add-port=6443/tcp --permanent
+firewall-cmd --reload
+#firewall-cmd --list-all
