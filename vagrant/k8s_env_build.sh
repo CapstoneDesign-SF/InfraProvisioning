@@ -4,6 +4,10 @@
 # vi 편집기를 vim으로 대체하는 alias를 /etc/profile 파일에 추가합니다.
 echo 'alias vi=vim' >> /etc/profile
 
+# 방화벽 해제
+systemctl stop firewalld && systemctl disable firewalld
+systemctl stop NetworkManager && systemctl disable NetworkManager
+
 # swapoff -a to disable swapping
 # 시스템의 스왑을 비활성화합니다.
 swapoff -a
