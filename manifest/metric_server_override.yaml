@@ -3,7 +3,7 @@ hostNetwork:
 args:
   - --secure-port=4443
   - --kubelet-insecure-tls
-  readinessProbe:
+  - readinessProbe:
     timeoutSeconds: 30
 tolerations:
   - effect: NoSchedule
