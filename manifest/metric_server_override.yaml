@@ -2,7 +2,6 @@ hostNetwork:
         enabled: true
 args:
         - --kubelet-insecure-tls
-        - --kubelet-preferred-address-types=InternalIP
 tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
