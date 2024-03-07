@@ -3,7 +3,7 @@
 # init kubernetes 
 # kubeadm을 사용하여 쿠버네티스 클러스터를 초기화합니다. 토큰과 네트워크 CIDR을 설정하고 마스터 노드의 API 서버 주소를 지정합니다.
 kubeadm init --token 123456.1234567890123456 --token-ttl 0 \
---pod-network-cidr=172.16.0.0/16 --apiserver-advertise-address=192.168.29.10
+            --pod-network-cidr=172.16.0.0/16 --apiserver-advertise-address=192.168.29.10 --v=10
 
 # config for master node only 
 # kubectl을 사용하여 클러스터에 대한 액세스를 위한 구성 파일을 생성하고 권한을 조정합니다.
