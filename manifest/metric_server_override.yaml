@@ -1,7 +1,10 @@
 hostNetwork:
-        enabled: true
+  enabled: true
 args:
-        - --kubelet-insecure-tls
+  - --secure-port=4443
+  - --kubelet-insecure-tls
+  readinessProbe:
+    timeoutSeconds: 30
 tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/control-plane
+  - effect: NoSchedule
+  key: node-role.kubernetes.io/control-plane

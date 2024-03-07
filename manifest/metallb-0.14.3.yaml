@@ -1544,7 +1544,7 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 1
+          timeoutSeconds: 10
         name: controller
         ports:
         - containerPort: 7472
@@ -1560,7 +1560,7 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 1
+          timeoutSeconds: 10
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1637,7 +1637,7 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 1
+          timeoutSeconds: 10
         name: speaker
         ports:
         - containerPort: 7472
@@ -1655,7 +1655,7 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 1
+          timeoutSeconds: 10
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

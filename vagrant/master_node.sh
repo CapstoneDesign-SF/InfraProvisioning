@@ -55,7 +55,5 @@ echo 'complete -F __start_kubectl k' >> ~/.bashrc
 # 6443 port 공개
 systemctl start firewalld
 firewall-cmd --add-port=6443/tcp --permanent
-firewall-cmd --add-port=10259/tcp --permanent
-firewall-cmd --add-port=10257/tcp --permanent
 firewall-cmd --reload
 #firewall-cmd --list-all

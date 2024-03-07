@@ -4970,7 +4970,7 @@ spec:
             periodSeconds: 10
             initialDelaySeconds: 10
             failureThreshold: 6
-            timeoutSeconds: 10
+            timeoutSeconds: 30
           readinessProbe:
             exec:
               command:
@@ -4978,7 +4978,7 @@ spec:
               - -felix-ready
               - -bird-ready
             periodSeconds: 10
-            timeoutSeconds: 10
+            timeoutSeconds: 30
           volumeMounts:
             # For maintaining CNI plugin API credentials.
             - mountPath: /host/etc/cni/net.d
@@ -5109,7 +5109,7 @@ spec:
             periodSeconds: 10
             initialDelaySeconds: 10
             failureThreshold: 6
-            timeoutSeconds: 10
+            timeoutSeconds: 30
           readinessProbe:
             exec:
               command:
