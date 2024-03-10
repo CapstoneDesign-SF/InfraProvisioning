@@ -1,7 +1,7 @@
 hostNetwork:
   enabled: true
 args:
-  - --secure-port=4443
+  - --secure-port=10250: --secure-port=4443
   - --kubelet-insecure-tls
   - containerPort: 4443
 tolerations:
