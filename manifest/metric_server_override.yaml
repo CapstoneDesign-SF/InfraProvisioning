@@ -1,9 +1,7 @@
 hostNetwork:
   enabled: true
 args:
-  - --secure-port=10250: --secure-port=4443
-  - --kubelet-insecure-tls
-  - containerPort: 4443
+  - secure-port: 4443
 tolerations:
   - effect: NoSchedule
     key: node-role.kubernetes.io/control-plane
